@@ -25,11 +25,11 @@ model = keras.Sequential([
 ])
 model.summary()   # 모델의 구조를 요약하여 살펴보자
 
-model.compile(optimizer='adamw',\
+model.compile(optimizer='adam',
              loss='categorical_crossentropy',
              metrics=['accuracy'])
 
-hist = model.fit(train_images, train_labels, epochs=10, verbose=1)
+hist = model.fit(train_images, train_labels, epochs=10, batch_size=128, verbose=1)
 
 test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=0)
 print('\n테스트 정확도:', test_acc)
@@ -57,10 +57,11 @@ conf_matrix = confusion_matrix(true_labels, predicted_labels)
 
 # 혼동 행렬 시각화
 plt.figure(figsize=(10, 8))
-sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues')
+sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues',
+            xticklabels=class_names, yticklabels=class_names)
 plt.xlabel('Predicted Label')
 plt.ylabel('True Label')
-plt.title('Confusion Matrix for MNIST Classification')
+plt.title('Confusion Matrix for MLP')
 plt.show()
 
 
