@@ -14,8 +14,9 @@ train_images, test_images = X_train / 255, X_test / 255
 # 데이터 증강
 data_augmentation = keras.Sequential([
     keras.layers.RandomFlip("horizontal"),
-    keras.layers.RandomRotation(0.3),
+    keras.layers.RandomRotation(0.1),
     keras.layers.RandomZoom(0.3),
+    keras.layers.RandomTranslation(0.1, 0.1),
 ])
 
 # 레이블을 one-hot encoding으로 변환
@@ -35,14 +36,10 @@ model = keras.models.Sequential( [
     keras.layers.Conv2D(kernel_size = (3,3), padding = 'same',
                         filters = 32),
     keras.layers.Flatten(),
-    keras.layers.Dense(1024, activation = 'relu'),
-    keras.layers.Dropout(.2), # 드롭아웃 추가
-    keras.layers.Dense(1024, activation = 'relu'),
-    keras.layers.Dropout(.2), # 드롭아웃 추가
     keras.layers.Dense(512, activation = 'relu'),
-    keras.layers.Dropout(.2),
-    keras.layers.Dense(512, activation = 'relu'),
-    keras.layers.Dropout(.2),
+    keras.layers.Dropout(.2), # 드롭아웃 추가
+    keras.layers.Dense(100, activation = 'relu'),
+    keras.layers.Dropout(.25),
     keras.layers.Dense(10, activation = 'softmax'),
 ])
 model.summary()
@@ -51,10 +48,10 @@ model.compile(optimizer='adam',
               loss='categorical_crossentropy',
               metrics=['accuracy'])
 # 모델 학습
-hist = model.fit(train_images, train_labels, epochs=50, batch_size=128, verbose=1)
+hist = model.fit(train_images, train_labels, epochs=200, batch_size=128, verbose=1)
 
 # 모델 평가
-test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
+test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=0)
 print('테스트 정확도:', test_acc)
 
 
