@@ -1,5 +1,5 @@
 from ultralytics import YOLO
 
-model = YOLO("yolov8m-seg.pt")
+model = YOLO("yolov8n.pt")
 
-model.predict(0, show=True, save=True, conf=0.8)
+model.predict("image2.png", show=True, save=True, conf=0.5)
